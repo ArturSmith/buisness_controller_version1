@@ -1,7 +1,7 @@
-import 'package:buisness_controller_verison_1/add_views/add_subdivision_view.dart';
-import 'package:buisness_controller_verison_1/models/divisions_model.dart';
-import 'package:buisness_controller_verison_1/pages/company_home_page/company_home_page.dart';
-import 'package:buisness_controller_verison_1/pages/login_page/login_page.dart';
+import 'package:buisness_controller_verison_1/views/add_department_view.dart';
+import 'package:buisness_controller_verison_1/models/department_model.dart';
+import 'package:buisness_controller_verison_1/pages/working_pages/company_home_page/company_home_page.dart';
+import 'package:buisness_controller_verison_1/pages/starting_pages/first_page/first_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => Model(),
+          create: (context) => DepartmentModel(),
         ),
       ],
       child: MaterialApp(
@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           //pages
-          '/': ((context) => const LoginPage()),
+          '/': ((context) => const FirstPage()),
           '/CompanyHomePage': ((context) => const CompanyHomePage()),
           // add views
-          '/AddSubdivisionView': ((context) => const AddSubdivisionView())
+          '/AddSubdivisionView': ((context) => const AddDepartmentView())
         },
         initialRoute: '/',
       ),

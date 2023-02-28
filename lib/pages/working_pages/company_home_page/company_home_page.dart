@@ -1,5 +1,5 @@
 import 'package:buisness_controller_verison_1/helpers/app_colors.dart';
-import 'package:buisness_controller_verison_1/pages/company_home_page/company_home_page_body.dart';
+import 'package:buisness_controller_verison_1/pages/working_pages/company_home_page/company_home_page_body.dart';
 import 'package:flutter/material.dart';
 
 class CompanyHomePage extends StatelessWidget {

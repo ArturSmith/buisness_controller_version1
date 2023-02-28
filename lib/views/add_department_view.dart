@@ -1,18 +1,18 @@
 import 'package:buisness_controller_verison_1/helpers/app_colors.dart';
 import 'package:buisness_controller_verison_1/helpers/text_field_decoration.dart';
-import 'package:buisness_controller_verison_1/models/divisions_model.dart';
-import 'package:buisness_controller_verison_1/objects/subdivision.dart';
+import 'package:buisness_controller_verison_1/models/department_model.dart';
+import 'package:buisness_controller_verison_1/objects/department.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddSubdivisionView extends StatefulWidget {
-  const AddSubdivisionView({super.key});
+class AddDepartmentView extends StatefulWidget {
+  const AddDepartmentView({super.key});
 
   @override
-  State<AddSubdivisionView> createState() => _AddSubdivisionViewState();
+  State<AddDepartmentView> createState() => _AddDepartmentViewState();
 }
 
-class _AddSubdivisionViewState extends State<AddSubdivisionView> {
+class _AddDepartmentViewState extends State<AddDepartmentView> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
@@ -23,7 +23,7 @@ class _AddSubdivisionViewState extends State<AddSubdivisionView> {
   String? cityError;
   String? streetError;
 
-  Set<Subdivision> divisions = {};
+  Set<Department> divisions = {};
 
   void add() {
     final nameText = nameController.text;
@@ -41,7 +41,7 @@ class _AddSubdivisionViewState extends State<AddSubdivisionView> {
         cityText.isNotEmpty &&
         streetText.isNotEmpty) {
       context
-          .read<Model>()
+          .read<DepartmentModel>()
           .addSubdivision(nameText, countryText, cityText, streetText);
       Navigator.pop(context);
     }
