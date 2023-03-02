@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class DepartmentModel extends ChangeNotifier {
-  Set<Department> divisions = {};
+  Set<Department> departments = {};
 
-  void addSubdivision(String name, String country, String city, String street) {
+  void addDepartment(String name, String country, String city, String street,
+      List<dynamic> users) {
     final id = const Uuid().v4();
-    final subdiv = Department(id, name, country, city, street);
-    divisions.add(subdiv);
+    final subdiv = Department(country, city, street, id, name);
+    departments.add(subdiv);
     notifyListeners();
   }
 
-  void deleteSubdivision(String id) {
-    divisions.removeWhere((element) => element.id == id);
+  void deleteDepartment(String id) {
+    departments.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 }

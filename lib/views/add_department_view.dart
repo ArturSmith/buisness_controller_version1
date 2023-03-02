@@ -9,10 +9,10 @@ class AddDepartmentView extends StatefulWidget {
   const AddDepartmentView({super.key});
 
   @override
-  State<AddDepartmentView> createState() => _AddDepartmentViewState();
+  State<AddDepartmentView> createState() => _AddDepartmentViewViewState();
 }
 
-class _AddDepartmentViewState extends State<AddDepartmentView> {
+class _AddDepartmentViewViewState extends State<AddDepartmentView> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
@@ -40,9 +40,8 @@ class _AddDepartmentViewState extends State<AddDepartmentView> {
         countryText.isNotEmpty &&
         cityText.isNotEmpty &&
         streetText.isNotEmpty) {
-      context
-          .read<DepartmentModel>()
-          .addSubdivision(nameText, countryText, cityText, streetText);
+      context.read<DepartmentModel>();
+      // .addDepartment(nameText, countryText, cityText, streetText);
       Navigator.pop(context);
     }
     setState(() {});
@@ -52,7 +51,7 @@ class _AddDepartmentViewState extends State<AddDepartmentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add subdivision'),
+        title: const Text('Add department'),
         centerTitle: true,
         backgroundColor: AppColors().appBarColor,
       ),
