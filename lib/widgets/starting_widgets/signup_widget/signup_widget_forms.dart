@@ -1,8 +1,8 @@
 import 'package:buisness_controller_verison_1/helpers/button_common_style.dart';
 import 'package:buisness_controller_verison_1/helpers/text_field_decoration.dart';
+import 'package:buisness_controller_verison_1/widgets/starting_widgets/signup_widget/signup_widget_model.dart';
 import 'package:flutter/material.dart';
-
-import 'signup_widget_forms_second.dart';
+import 'package:provider/provider.dart';
 
 class SignupWidgetForms extends StatefulWidget {
   const SignupWidgetForms({super.key});
@@ -12,38 +12,14 @@ class SignupWidgetForms extends StatefulWidget {
 }
 
 class _SignupWidgetFormsState extends State<SignupWidgetForms> {
-  final TextEditingController nameCont = TextEditingController();
-  final TextEditingController countryCont = TextEditingController();
-  final TextEditingController cityCont = TextEditingController();
-  final TextEditingController streetCont = TextEditingController();
-
   String? errorName, errorCountry, errorCity, errorStreet;
 
-  void next() {
-    final nameText = nameCont.text;
-    final countryText = countryCont.text;
-    final cityText = cityCont.text;
-    final streetText = streetCont.text;
+  SignupWidgetModel readModel(BuildContext context) {
+    return context.read<SignupWidgetModel>();
+  }
 
-    errorName = nameText == '' ? 'Write name' : null;
-    errorCountry = countryText == '' ? 'Write country' : null;
-    errorCity = cityText == '' ? 'Write city' : null;
-    errorStreet = streetText == '' ? 'Write street' : null;
-
-    if (nameText.isNotEmpty &&
-        countryText.isNotEmpty &&
-        cityText.isNotEmpty &&
-        streetText.isNotEmpty) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) => SignupWidgetFormsSecond(
-                name: nameText,
-                country: countryText,
-                city: cityText,
-                street: streetText)),
-      );
-    }
-    setState(() {});
+  SignupWidgetModel watchModel(BuildContext context) {
+    return context.watch<SignupWidgetModel>();
   }
 
   @override
@@ -54,31 +30,45 @@ class _SignupWidgetFormsState extends State<SignupWidgetForms> {
         children: [
           const Spacer(flex: 20),
           TextField(
-            controller: nameCont,
+            onChanged: (value) {
+              readModel(context).name = value;
+            },
+            decoration: TextFieldDecoration(
+                    watchModel(context).errorName, 'Name of company')
+                .decoration(),
+          ),
+          const Spacer(flex: 3),
+          TextField(
+            onChanged: ((value) {
+              readModel(context).country = value;
+            }),
             decoration:
-                TextFieldDecoration(errorName, 'Name of company').decoration(),
+                TextFieldDecoration(watchModel(context).errorCountry, 'Country')
+                    .decoration(),
           ),
           const Spacer(flex: 3),
           TextField(
-            controller: countryCont,
+            onChanged: ((value) {
+              readModel(context).city = value;
+            }),
             decoration:
-                TextFieldDecoration(errorCountry, 'Country').decoration(),
+                TextFieldDecoration(watchModel(context).errorCity, 'City')
+                    .decoration(),
           ),
           const Spacer(flex: 3),
           TextField(
-            controller: cityCont,
-            decoration: TextFieldDecoration(errorCity, 'City').decoration(),
-          ),
-          const Spacer(flex: 3),
-          TextField(
-            controller: streetCont,
-            decoration: TextFieldDecoration(errorStreet, 'Street').decoration(),
+            onChanged: (value) {
+              readModel(context).street = value;
+            },
+            decoration:
+                TextFieldDecoration(watchModel(context).errorStreet, 'Street')
+                    .decoration(),
           ),
           const Spacer(flex: 3),
           ElevatedButton(
               style: ButtonCommonStyle().buttonStyle,
               onPressed: (() {
-                next();
+                readModel(context).next(context);
               }),
               child: const Text(
                 'Next',

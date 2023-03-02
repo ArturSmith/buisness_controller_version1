@@ -1,50 +1,18 @@
 import 'package:buisness_controller_verison_1/helpers/button_common_style.dart';
 import 'package:buisness_controller_verison_1/helpers/text_field_decoration.dart';
-import 'package:buisness_controller_verison_1/models/main_model.dart';
-import 'package:buisness_controller_verison_1/widgets/working_widgets/company_widget/company_widget.dart';
+import 'package:buisness_controller_verison_1/widgets/starting_widgets/login_widget/login_widget_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginWidgetForms extends StatefulWidget {
+class LoginWidgetForms extends StatelessWidget {
   const LoginWidgetForms({super.key});
 
-  @override
-  State<LoginWidgetForms> createState() => _LoginWidgetFormsState();
-}
+  LoginWidgetModel readModel(BuildContext context) {
+    return context.read<LoginWidgetModel>();
+  }
 
-class _LoginWidgetFormsState extends State<LoginWidgetForms> {
-  final TextEditingController loginCont = TextEditingController();
-  final TextEditingController passwordCont = TextEditingController();
-
-  String? errorLogin, errorPassword;
-
-  void login() {
-    final login = loginCont.text;
-    final password = passwordCont.text;
-
-    errorLogin = login == '' ? 'Write login' : null;
-    errorPassword = password == '' ? 'Write password' : null;
-
-    if (login.isNotEmpty && password.isNotEmpty) {
-      if (context.read<MainModel>().logins.contains(login)) {
-        final CompanyWidget company = context
-            .read<MainModel>()
-            .companies
-            .singleWhere((element) => element.login == login);
-        if (company.password == password) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => company,
-            ),
-          );
-        } else {
-          errorPassword = 'Wrong password';
-        }
-      } else {
-        errorLogin = 'Login does not exist';
-      }
-    }
-    setState(() {});
+  LoginWidgetModel watchModel(BuildContext context) {
+    return context.watch<LoginWidgetModel>();
   }
 
   @override
@@ -55,20 +23,27 @@ class _LoginWidgetFormsState extends State<LoginWidgetForms> {
         children: [
           const Spacer(flex: 20),
           TextField(
-            controller: loginCont,
-            decoration: TextFieldDecoration(errorLogin, 'Login').decoration(),
+            onChanged: (value) {
+              readModel(context).checkLogin(context, value);
+            },
+            decoration:
+                TextFieldDecoration(watchModel(context).errorLogin, 'Login')
+                    .decoration(),
           ),
           const Spacer(flex: 3),
           TextField(
-            controller: passwordCont,
-            decoration:
-                TextFieldDecoration(errorPassword, 'Password').decoration(),
+            onChanged: (value) {
+              readModel(context).checkPassword(context, value);
+            },
+            decoration: TextFieldDecoration(
+                    watchModel(context).errorPassword, 'Password')
+                .decoration(),
           ),
           const Spacer(flex: 3),
           ElevatedButton(
             style: ButtonCommonStyle().buttonStyle,
             onPressed: () {
-              login();
+              readModel(context).loginMethod(context);
             },
             child: const Text(
               'Login',

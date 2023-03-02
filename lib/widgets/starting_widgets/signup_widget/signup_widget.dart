@@ -9,13 +9,12 @@ class SignupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Signup'),
-          centerTitle: true,
-          backgroundColor: AppColors().appBarColor,
-        ),
-        body: const SignupWidgetForms(),
-      ),
+          appBar: AppBar(
+            title: const Text('Signup'),
+            centerTitle: true,
+            backgroundColor: AppColors().appBarColor,
+          ),
+          body: const SignupWidgetForms()),
     );
   }
 }

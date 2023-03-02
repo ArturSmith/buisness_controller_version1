@@ -1,21 +1,14 @@
+import 'package:buisness_controller_verison_1/helpers/app_colors.dart';
 import 'package:buisness_controller_verison_1/helpers/button_common_style.dart';
 import 'package:buisness_controller_verison_1/helpers/text_field_decoration.dart';
-import 'package:buisness_controller_verison_1/models/main_model.dart';
-import 'package:buisness_controller_verison_1/widgets/working_widgets/company_widget/company_widget.dart';
+import 'package:buisness_controller_verison_1/widgets/starting_widgets/signup_widget/signup_widget_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SignupWidgetFormsSecond extends StatefulWidget {
-  const SignupWidgetFormsSecond(
-      {super.key,
-      required this.name,
-      required this.country,
-      required this.city,
-      required this.street});
-  final String name;
-  final String country;
-  final String city;
-  final String street;
+  const SignupWidgetFormsSecond({
+    super.key,
+  });
 
   @override
   State<SignupWidgetFormsSecond> createState() =>
@@ -29,72 +22,63 @@ class _SignupWidgetFormsSecondState extends State<SignupWidgetFormsSecond> {
 
   String? errorLogin, errorPassword, errorConfirmedPassword;
 
-  void signup() {
-    final String login = loginCont.text;
-    final String password = passwordCont.text;
-    final String confirmedPassword = confirmedPasswordCont.text;
+  SignupWidgetModel readModel(BuildContext context) {
+    return context.read<SignupWidgetModel>();
+  }
 
-    errorLogin = login == '' ? 'Write login' : null;
-    errorPassword = password == '' ? 'Write password' : null;
-    errorConfirmedPassword =
-        confirmedPassword == '' ? 'Confirm your password' : null;
-
-    if (login.isNotEmpty &&
-        password.isNotEmpty &&
-        confirmedPassword.isNotEmpty) {
-      if (!context.read<MainModel>().logins.contains(login)) {
-        if (confirmedPassword == password) {
-          context.read<MainModel>().addLogin(login);
-          final company = CompanyWidget(
-              name: widget.name,
-              country: widget.country,
-              city: widget.city,
-              street: widget.street,
-              login: login,
-              password: password);
-          context.read<MainModel>().addCompany(company);
-          Navigator.of(context).pushReplacementNamed('/LoginWidget');
-        } else {
-          errorConfirmedPassword = "Wrong password";
-        }
-      } else {
-        errorLogin = 'Login already exists';
-      }
-    }
-    setState(() {});
+  SignupWidgetModel watchModel(BuildContext context) {
+    return context.watch<SignupWidgetModel>();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors().appBarColor,
+        title: const Text('Create login and password'),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
             const Spacer(flex: 20),
             TextField(
+              onChanged: (value) {
+                readModel(context).checkLogin(context, value);
+              },
               controller: loginCont,
-              decoration: TextFieldDecoration(errorLogin, 'Login').decoration(),
-            ),
-            const Spacer(flex: 3),
-            TextField(
-              controller: passwordCont,
               decoration:
-                  TextFieldDecoration(errorPassword, 'Password').decoration(),
+                  TextFieldDecoration(watchModel(context).errorLogin, 'Login')
+                      .decoration(),
             ),
             const Spacer(flex: 3),
             TextField(
+              onChanged: (value) {
+                context.read<SignupWidgetModel>().password = value;
+              },
+              controller: passwordCont,
+              decoration: TextFieldDecoration(
+                      watchModel(context).errorPassword, 'Password')
+                  .decoration(),
+            ),
+            const Spacer(flex: 3),
+            TextField(
+              onChanged: (value) {
+                readModel(context).checkConfirmedPassword(value);
+              },
               controller: confirmedPasswordCont,
               decoration: TextFieldDecoration(
-                      errorConfirmedPassword, 'Confirm password')
+                      watchModel(context).errorConfirmedPassword,
+                      'Confirm password')
                   .decoration(),
             ),
             const Spacer(flex: 3),
             ElevatedButton(
                 style: ButtonCommonStyle().buttonStyle,
                 onPressed: (() {
-                  signup();
+                  readModel(context).signup(context);
                 }),
                 child: const Text(
                   'Signup',
