@@ -1,55 +1,34 @@
 import 'package:buisness_controller_verison_1/helpers/app_colors.dart';
+import 'package:buisness_controller_verison_1/helpers/button_common_style.dart';
 import 'package:buisness_controller_verison_1/helpers/text_field_decoration.dart';
-import 'package:buisness_controller_verison_1/models/department_model.dart';
-import 'package:buisness_controller_verison_1/objects/department.dart';
+
+import 'package:buisness_controller_verison_1/views/add_department_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddDepartmentView extends StatefulWidget {
-  const AddDepartmentView({super.key});
+class AddDepartmentView extends StatelessWidget {
+  const AddDepartmentView({super.key, required this.parentID});
+  final String parentID;
 
-  @override
-  State<AddDepartmentView> createState() => _AddDepartmentViewViewState();
-}
+  void setDataToModel(BuildContext context) {
+    context.read<AddDepartmentViewModel>().parentID = parentID;
+  }
 
-class _AddDepartmentViewViewState extends State<AddDepartmentView> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController countryController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController streetController = TextEditingController();
+  AddDepartmentViewModel readModel(BuildContext context) {
+    return context.read<AddDepartmentViewModel>();
+  }
 
-  String? nameError;
-  String? countryError;
-  String? cityError;
-  String? streetError;
-
-  Set<Department> divisions = {};
-
-  void add() {
-    final nameText = nameController.text;
-    final countryText = countryController.text;
-    final cityText = cityController.text;
-    final streetText = streetController.text;
-
-    nameError = nameText == '' ? 'Write name' : null;
-    countryError = countryText == '' ? 'Write country' : null;
-    cityError = cityText == '' ? 'Write city' : null;
-    streetError = streetText == '' ? 'Write street' : null;
-
-    if (nameText.isNotEmpty &&
-        countryText.isNotEmpty &&
-        cityText.isNotEmpty &&
-        streetText.isNotEmpty) {
-      context.read<DepartmentModel>();
-      // .addDepartment(nameText, countryText, cityText, streetText);
-      Navigator.pop(context);
-    }
-    setState(() {});
+  AddDepartmentViewModel watchModel(BuildContext context) {
+    return context.watch<AddDepartmentViewModel>();
   }
 
   @override
   Widget build(BuildContext context) {
+    setDataToModel(context);
     return Scaffold(
+      drawer: Drawer(
+        width: MediaQuery.of(context).size.width / 1.5,
+      ),
       appBar: AppBar(
         title: const Text('Add department'),
         centerTitle: true,
@@ -63,40 +42,55 @@ class _AddDepartmentViewViewState extends State<AddDepartmentView> {
             children: [
               const Spacer(flex: 30),
               TextField(
-                controller: nameController,
-                decoration: TextFieldDecoration(nameError, 'Name').decoration(),
-              ),
-              const Spacer(flex: 3),
-              TextField(
-                controller: countryController,
+                onChanged: (value) {
+                  readModel(context).checkName(context, value);
+                },
                 decoration:
-                    TextFieldDecoration(countryError, 'Country').decoration(),
+                    TextFieldDecoration(watchModel(context).errorName, 'Name')
+                        .decoration(),
               ),
               const Spacer(flex: 3),
               TextField(
-                controller: cityController,
-                decoration: TextFieldDecoration(cityError, 'City').decoration(),
+                onChanged: (value) {
+                  readModel(context).country = value;
+                },
+                decoration: TextFieldDecoration(null, 'Country (not required)')
+                    .decoration(),
               ),
               const Spacer(flex: 3),
               TextField(
-                controller: streetController,
-                decoration:
-                    TextFieldDecoration(streetError, 'Street').decoration(),
+                onChanged: (value) {
+                  readModel(context).city = value;
+                },
+                decoration: TextFieldDecoration(null, 'City (not required)')
+                    .decoration(),
+              ),
+              const Spacer(flex: 3),
+              TextField(
+                onChanged: (value) {
+                  readModel(context).street = value;
+                },
+                decoration: TextFieldDecoration(null, 'Street (not required)')
+                    .decoration(),
               ),
               const Spacer(flex: 10),
               ElevatedButton(
                 onPressed: (() {
-                  add();
+                  readModel(context).add(context);
                 }),
-                style: ButtonStyle(
-                    minimumSize:
-                        MaterialStateProperty.all(const Size(200, 50))),
+                style: ButtonCommonStyle().buttonStyle,
                 child: const Text(
                   'Add',
                   style: TextStyle(color: Colors.black),
                 ),
               ),
-              const Spacer(flex: 30),
+              const Spacer(flex: 20),
+              IconButton(
+                  onPressed: (() {
+                    Navigator.of(context).pop();
+                  }),
+                  icon: const Icon(Icons.arrow_back)),
+              const Spacer(flex: 4),
             ],
           ),
         ),

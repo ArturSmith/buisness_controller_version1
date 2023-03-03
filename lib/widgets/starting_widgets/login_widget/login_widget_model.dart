@@ -60,7 +60,7 @@ class LoginWidgetModel extends ChangeNotifier {
           .read<MainModel>()
           .companies
           .singleWhere((element) => element.login == login);
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => company,
         ),

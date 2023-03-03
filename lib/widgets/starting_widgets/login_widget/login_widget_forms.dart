@@ -50,7 +50,7 @@ class LoginWidgetForms extends StatelessWidget {
               style: TextStyle(color: Colors.black),
             ),
           ),
-          const Spacer(flex: 20)
+          const Spacer(flex: 20),
         ],
       ),
     );

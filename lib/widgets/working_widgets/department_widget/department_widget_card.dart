@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class DepartmentCardView extends StatefulWidget {
-  const DepartmentCardView(
+class DepartmentWidgetCard extends StatelessWidget {
+  const DepartmentWidgetCard(
       {super.key,
       required this.name,
       required this.country,
@@ -16,14 +16,6 @@ class DepartmentCardView extends StatefulWidget {
   final String id;
 
   @override
-  State<DepartmentCardView> createState() => _DepartmentCardState();
-}
-
-class _DepartmentCardState extends State<DepartmentCardView> {
-  void delete() {}
-
-  void showStructure() {}
-  @override
   Widget build(BuildContext context) {
     return Slidable(
       startActionPane: ActionPane(
@@ -32,16 +24,12 @@ class _DepartmentCardState extends State<DepartmentCardView> {
           SlidableAction(
             flex: 1,
             spacing: 1,
-            onPressed: ((context) {
-              delete();
-            }),
+            onPressed: ((context) {}),
             icon: Icons.delete,
             label: "Delete",
           ),
           SlidableAction(
-            onPressed: ((context) {
-              showStructure();
-            }),
+            onPressed: ((context) {}),
             flex: 1,
             borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(10),
@@ -64,12 +52,12 @@ class _DepartmentCardState extends State<DepartmentCardView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.name,
+                name,
                 style:
                     const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
               ),
               Text(
-                'Address: ${widget.country}, ${widget.city}, ${widget.street}',
+                'Address: $country, $city, $street',
                 style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
